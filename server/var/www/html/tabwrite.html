@@ -243,7 +243,7 @@ $err = 0;
            if((strlen($data[0]) == 14)&($data[0][5]=="4")&($data[0][6]=="7")) $data[0] = substr($data[0],7);
            if((strlen($data[0]) == 12)&($data[0][3]=="4")&($data[0][4]=="7")) $data[0] = substr($data[0],5);
 
-			if((($data[0][0]=="2") || ($data[0][0]=="3") || ($data[0][0]=="4")) && (strlen($data[0]) == 7))
+			if((($data[0][0]=="2") || (($data[0][0]=="3") && ($data[0][2]!="0")) || (($data[0][0]=="4") && ($data[0][2]!="0"))) && (strlen($data[0]) == 7))
             {
                 if (pg_query($connection, "INSERT INTO vremen( vrem_nomer, vrem_summa) VALUES ($data[0], ceil($data[1]));") !== FALSE)
                 {
