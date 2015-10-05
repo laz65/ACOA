@@ -428,6 +428,11 @@ yum install ntp
 service ntpd restart
 chkconfig --level 2345 ntpd on
 
+Проверка:
+
+ntpq -c peers
+
+
 
 Названия файлов:
 в /var/lib/asterisk/sounds/ru/ 3 каталога:
