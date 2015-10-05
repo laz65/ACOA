@@ -1,0 +1,56 @@
+#!/usr/bin/perl
+use strict;
+use Fcntl;
+
+
+$|=1;
+
+# Setup some variables
+my %AGI; my $tests = 0; my @can = ("","");
+while(<STDIN>)
+{
+chomp;
+last unless length($_);
+if (/^agi_(\w+)\:\s+(.*)$/)  {  $AGI{$1} = $2;  }
+}
+;
+#print STDERR "-----------AGI EXECUTIONS...--------------\n";
+
+# foreach my $i (sort keys %AGI)
+#{
+#print STDERR " -- $i = $AGI{$i}\n";
+#}
+#;
+my $nomer = $AGI{arg_1}; my $canal = $AGI{arg_2};
+my $mask=substr($nomer,0,3);
+my @list = glob '/var/spool/asterisk/outgoing/*.call';
+@list = grep (substr($_,29,3) eq $mask, @list);
+#if (scalar(@list) < 1)
+{
+    if ( -e  "/var/spool/asterisk/outgoing/${nomer}.call")
+    {
+        unlink ("/var/spool/asterisk/outgoing/${nomer}.call");
+    }                
+    sysopen FH, "/var/spool/asterisk/tmp/${nomer}.call", O_WRONLY | O_CREAT | O_TRUNC;
+    print FH "Channel: $canal/29$nomer\n" ;
+    print FH "Callerid: 472339555\n" ;
+    print FH "MaxRetries: 0\n" ;
+    print FH "RetryTime: 2\n" ;
+    print FH "WaitTime: 30\n" ;
+    print FH "Context: zvon1\n" ;
+    print FH "Extension: $nomer\n" ;
+    print FH "Priority: 1\n" ;
+    print FH "Set: mycanal=$canal\n" ;
+    print FH "Set: nomer=$nomer\n" ;
+    close FH ;
+    my $when = time() + 2;
+    utime($when, $when, "/var/spool/asterisk/tmp/${nomer}.call") ;
+    rename "/var/spool/asterisk/tmp/${nomer}.call", "/var/spool/asterisk/outgoing/${nomer}.call" ;
+    utime($when, $when, "/var/spool/asterisk/outgoing/${nomer}.call") ;
+    #print STDERR "=======Call files ${nomer}.call created=======\n";
+    
+    
+}
+;
+                                                                                        
+                                                                                        

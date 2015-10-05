@@ -1,0 +1,28 @@
+#!/usr/bin/perl
+use strict;
+use Fcntl;
+
+$|=1;
+
+my ($a, $a, $a, $a, $a, $a, $a, $a, $timest) = localtime;
+$timest = ($timest + 2) * 3600;
+
+while ( -e  "/var/spool/asterisk/outgoing/timer1.call")
+{
+unlink("/var/spool/asterisk/outgoing/timer1.call")
+};
+
+sysopen FH, "/var/spool/asterisk/tmp/timer1.call", O_WRONLY | O_CREAT | O_TRUNC;
+print FH "Channel: SIP/0\n" ;
+print FH "Callerid: 0\n" ;
+print FH "MaxRetries: 0\n" ;
+print FH "WaitTime: 15\n" ;
+print FH "Context: timer1\n" ;
+print FH "Extension: s\n" ;
+print FH "Priority: 1\n" ;
+close FH ;
+my $when = time() + 4;
+utime($when, $when, "/var/spool/asterisk/tmp/timer1.call") ;
+rename "/var/spool/asterisk/tmp/timer1.call", "/var/spool/asterisk/outgoing/timer1.call" ;
+utime($when, $when, "/var/spool/asterisk/outgoing/timer1.call") ;
+

@@ -1,0 +1,9 @@
+SHELL=/bin/bash
+MAILTO=apache
+* 8-21 * * 1 sudo -i /var/lib/asterisk/agi-bin/form_timer.agi
+* 8-21 * * 2 sudo -i /var/lib/asterisk/agi-bin/form_timer.agi
+* 8-21 * * 3 sudo -i /var/lib/asterisk/agi-bin/form_timer.agi
+* 8-21 * * 4 sudo -i /var/lib/asterisk/agi-bin/form_timer.agi
+* 8-20 * * 5 sudo -i /var/lib/asterisk/agi-bin/form_timer.agi
+* 10-19 * * 6 sudo -i /var/lib/asterisk/agi-bin/form_timer.agi
+* 10-19 * * 0 sudo -i /var/lib/asterisk/agi-bin/form_timer.agi

@@ -1,0 +1,129 @@
+Добавим Apache в автозагрузку:
+
+chkconfig --level 2345 httpd on
+(# chkconfig --list    - просмотр автозагрузки,)
+
+
+В файлe
+vi /etc/httpd/conf/httpd.conf # добавляем строку:
+
+ 
+AddType application/x-httpd-php .php .html .htm
+
+и меняем:
+User apache
+Group root
+
+Для входа на сервер под паролем
+добавляем строки в секцию
+<Directory "/var/www/html"> 
+(вместо AllowOverride None):
+
+    AuthName "Autoinformator"
+    AuthType Basic
+    Require valid-user
+    AuthUserFile /var/www/html/.htpasswd
+    AllowOverride all
+
+выходим:
+
+:wq
+
+создаем файл с паролем: 
+
+htpasswd -bc /var/www/sklad/.htpasswd Имя_пользавателя Пароль
+
+
+строки: 
+
+<Directory "/var/www/bezpeka">
+    Options Indexes MultiViews
+    AllowOverride None
+    Order allow,deny
+    Allow from all
+</Directory>
+
+это значит что есть  узел "безпека"
+
+Мой узел склада:
+
+<Directory "/var/www/sklad">
+    Options Indexes MultiViews
+    AuthName "Ushet_remonta"
+    AuthType Basic
+    Require valid-user
+    AuthUserFile /var/www/sklad/.htpasswd
+    AllowOverride all
+    Order allow,deny
+    Allow from all
+</Directory>
+
+
+
+
+После сохранения и создания нужных каталогов:
+
+устанавлиаем собственника
+
+chown -R apache /var/www/
+
+service httpd restart
+
+
+
+Для входа по ftp:
+
+Установка сервера FTP
+
+yum --disablerepo=\* --enablerepo=c5-media install -y vsftpd
+
+chkconfig --level 2345 vsftpd on
+
+useradd -d /var/www/sklad -m sklad
+
+passwd sklad
+
+проверить, чтобы в файле /etc/passwd юзер sklad был /sbin/nologin
+
+Пароль для ftp - sklad22 
+
+chown -R sklad /var/www/sklad
+
+разрешить доступ через ftpd к домашним директориям.
+
+vi /etc/vsftpd/vsftpd.conf
+добавить строку: 
+chroot_local_user=YES
+
+
+setsebool -P ftp_home_dir 1
+setsebool -P allow_ftpd_full_access 1
+modprobe ip_conntrack_ftp 
+
+
+setsebool -P httpd_disable_trans 1
+
+usermod -g root apache
+
+service httpd restart
+chmod 777 /var/www/sklad
+
+
+Запустить 
+visudo
+
+Добавить после
+root    ALL=(ALL)       ALL
+apache  ALL=(ALL)        NOPASSWD: ALL
+
+Заменить 
+Default  requiretty 
+на 
+Default !requiretty 
+
+добавим в файл:
+vi /etc/rc.local
+
+modprobe ip_conntrack_ftp 
+
+service vsftpd restart

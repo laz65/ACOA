@@ -1,0 +1,1 @@
+*/2 * * * * sudo -i /var/lib/asterisk/agi-bin/timer1.agi

@@ -1,0 +1,27 @@
+#!/usr/bin/perl
+use strict;
+use Fcntl;
+
+my $nomer = shift; my $canal = shift;
+$nomer=~s/\s*//;
+while ( -e  "/var/spool/asterisk/outgoing/${nomer}.call") { sleep (1); }
+sysopen FH, "/var/spool/asterisk/tmp/${nomer}.call", O_WRONLY | O_CREAT | O_TRUNC;
+print FH "Channel: $canal/29$nomer\n" ;
+print FH "Callerid: 472339555\n" ;
+print FH "MaxRetries: 0\n" ;
+print FH "RetryTime: 2\n" ;
+print FH "WaitTime: 30\n" ;
+print FH "Context: zvon1\n" ;
+print FH "Extension: $nomer\n" ;
+print FH "Priority: 1\n" ;
+print FH "Set: mycanal=$canal\n" ;
+print FH "Set: nomer=$nomer\n" ;
+close FH ;
+my $when = time() + 2;
+utime($when, $when, "/var/spool/asterisk/tmp/${nomer}.call") ;
+rename "/var/spool/asterisk/tmp/${nomer}.call", "/var/spool/asterisk/outgoing/${nomer}.call" ;
+utime($when, $when, "/var/spool/asterisk/outgoing/${nomer}.call") ;
+
+;
+                                                                                        
+                                                                                        

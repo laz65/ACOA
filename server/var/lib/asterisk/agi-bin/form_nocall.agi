@@ -1,0 +1,53 @@
+#!/usr/bin/perl
+use strict;
+use Fcntl;
+
+$|=1;
+
+# Setup some variables
+my %AGI; my $tests = 0; my @can = ("","");
+while(<STDIN>)
+{
+chomp;
+last unless length($_);
+if (/^agi_(\w+)\:\s+(.*)$/)  {  $AGI{$1} = $2;  }
+}
+;
+print STDERR "-----------AGI EXECUTIONS...--------------\n";
+
+# foreach my $i (sort keys %AGI)
+#{
+#print STDERR " -- $i = $AGI{$i}\n";
+#}
+#;
+my $nomer = $AGI{arg_1}; my $summa = $AGI{arg_2};
+
+unless (length($nomer)) {$nomer = "777" ; $summa = "222" };
+
+
+
+
+sysopen FH, "/var/spool/asterisk/tmp/${nomer}_.call", O_WRONLY | O_CREAT | O_TRUNC;
+print FH "Channel: SIP/$nomer\n" ;
+print FH "Callerid: 777\n" ;
+print FH "MaxRetries: 0\n" ;
+print FH "RetryTime: 2\n" ;
+print FH "WaitTime: 15\n" ;
+print FH "Context: zvon\n" ;
+print FH "Extension: $nomer\n" ;
+print FH "Priority: 1\n" ;
+print FH "Set: mysumma=$summa\n" ;
+print FH "Set: mynomer=$nomer\n" ;
+close FH ;
+my $when = time() + 5; 
+utime $when, $when, "/var/spool/asterisk/tmp/${nomer}.call" ;
+rename "/var/spool/asterisk/tmp/${nomer}_.call", "/var/spool/asterisk/outgoing/${nomer}_.call" ;
+
+
+print STDERR "=======Call files ${nomer}.call created=======\n";
+
+print STDERR "-------------AGI script end.---------------\n";
+print STDERR "--------------${nomer}.call----------------\n";
+
+
+;

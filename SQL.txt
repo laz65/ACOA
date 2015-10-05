@@ -1,0 +1,79 @@
+
+
+
+CREATE SEQUENCE nom_seq;
+CREATE TABLE obzvon (
+    nom_id integer NOT NULL DEFAULT nextval('nom_seq'), vrem char (10),
+    nomer  char (10),  summa integer, norm integer NOT NULL DEFAULT 0,
+    CONSTRAINT nom_pkey PRIMARY KEY (nom_id) );
+
+
+ALTER TABLE spiski ALTER namespis TYPE varchar(255);
+
+ALTER TABLE spiski ADD COLUMN prim varchar(255);
+
+
+ALTER TABLE obzvon ADD COLUMN spisik integer NOT NULL DEFAULT 0;
+
+ALTER TABLE obzvon ADD COLUMN vrem char (10);
+
+CREATE INDEX nom_idx ON Obzvon (nom); 
+CREATE INDEX nomer_idx ON Obzvon (nomer); 
+
+
+
+
+SELECT * FROM obzvon
+
+
+UPDATE obzvon SET norm = 'true' WHERE nomer = '14'
+
+DROP TABLE obzvon
+
+DROP INDEX nome
+
+DROP INDEX namber
+
+DELETE FROM obzvon 
+ WHERE nomer <> '1';
+
+SELECT nom FROM obzvon WHERE nom > 0 AND norm <> 'true';
+
+
+
+INSERT INTO obzvon( nomer, summa) VALUES 
+
+('1000', '2001');
+('1003', '234');
+('1004', '25');
+
+TRUNCATE TABLE obzvon;
+
+ALTER SEQUENCE nom_seq  RESTART WITH 1;
+ 
+
+;
+CREATE TABLE usersweb ( login char (16), password char (16) );
+
+INSERT INTO usersweb(login, password) VALUES ('aleksey', 'dbnjxrf');
+
+
+SELECT ordinal_position, column_name, data_type FROM information_schema.columns WHERE table_name='rabotniki';
+
+
+CREATE INDEX vrem_nomer_idx ON vremen (vrem_nomer);
+CREATE INDEX vrem_summa_idx ON vremen (vrem_summa);
+CREATE INDEX vremen_idx ON vremen (vremen_id);
+CREATE INDEX vrem_idx ON obzvon (vrem);
+CREATE INDEX norm_idx ON obzvon (norm);
+CREATE INDEX otv_idx ON obzvon (otv);
+CREATE INDEX kol_idx ON obzvon (kol);
+
+ 
+
+
+
+
+ALTER TABLE auto ALTER data_stv TYPE integer;
+
+ALTER TABLE user_auto RENAME COLUMN telefon TO telefone;

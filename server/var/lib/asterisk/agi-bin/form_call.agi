@@ -1,0 +1,31 @@
+#!/usr/bin/perl
+use strict;
+use Fcntl;
+
+my $nomer = shift; my $summa = shift; my $canal = shift; my $spisok = shift;
+$nomer=~s/\s*//;
+$summa=~s/\s*//;
+$canal=~s/\s*//;
+$spisok=~s/\s*//;
+while ( -e  "/var/spool/asterisk/outgoing/${nomer}a.call") { sleep (1); }
+sysopen FH, "/var/spool/asterisk/tmp/${nomer}a.call", O_WRONLY | O_CREAT | O_TRUNC;
+print FH "Channel: $canal/29$nomer\n" ;
+print FH "Callerid: 472339555\n" ;
+print FH "MaxRetries: 0\n" ;
+print FH "RetryTime: 2\n" ;
+print FH "WaitTime: 30\n" ;
+print FH "Context: zvon\n" ;
+print FH "Extension: $nomer\n" ;
+print FH "Priority: 1\n" ;
+print FH "Set: mysumma=$summa\n" ;
+print FH "Set: mynomer=$nomer\n" ;
+print FH "Set: myspisok=$spisok\n" ;
+print FH "Set: mycanal=$canal\n" ;
+close FH ;
+my $when = time() + 2; 
+utime($when, $when, "/var/spool/asterisk/tmp/${nomer}a.call") ;
+rename "/var/spool/asterisk/tmp/${nomer}a.call", "/var/spool/asterisk/outgoing/${nomer}a.call" ;
+utime($when, $when, "/var/spool/asterisk/outgoing/${nomer}a.call") ;        
+#print STDERR "=======Call files ${nomer}a.call created=======\n";
+
+;

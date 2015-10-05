@@ -1,0 +1,38 @@
+<STYLE type="text/css">
+
+A {
+	font-weight : normal;
+	text-decoration: underline;
+}
+
+A:visible {
+	font-weight : normal;
+	text-decoration: underline;
+}
+
+A:hover {
+	font-weight : normal;
+	text-decoration: none;
+}
+
+.body {font-family:arial; font-size: 12px; color:black; margin-top: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px}
+
+.text {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 10pt;
+	text-decoration: none;
+}
+
+.logobg {background-image:  url(../images/bg.gif);}
+
+.sec { font-family:Verdana, Arial, Helvetica, sans-serif; font-size:11px; color:#ffffff } 
+
+.ref { font-family:Verdana, Arial, Helvetica, sans-serif; font-size:10px; color:#000000 } 
+
+.refhome { font-family:Verdana, Arial, Helvetica, sans-serif; background-color:#336633; font-size:10px; }
+
+.refhometd {font-family:Verdana, Arial, Helvetica, sans-serif; background-color:#ffffff;}
+ 
+.sectref { font-family:Verdana, Arial, Helvetica, sans-serif; font-size:10px; color:#ffffff } 
+
+</STYLE>
